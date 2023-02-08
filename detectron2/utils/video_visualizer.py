@@ -74,9 +74,9 @@ class VideoVisualizer:
         if num_instances == 0:
             return frame_visualizer.output
 
-        boxes = predictions.pred_boxes.tensor.numpy() if predictions.has("pred_boxes") else None
+        boxes = predictions.pred_boxes.tensor.cpu().numpy() if predictions.has("pred_boxes") else None
         scores = predictions.scores if predictions.has("scores") else None
-        classes = predictions.pred_classes.numpy() if predictions.has("pred_classes") else None
+        classes = predictions.pred_classes.cpu().numpy() if predictions.has("pred_classes") else None
         keypoints = predictions.pred_keypoints if predictions.has("pred_keypoints") else None
         colors = predictions.COLOR if predictions.has("COLOR") else [None] * len(predictions)
         periods = predictions.ID_period if predictions.has("ID_period") else None

@@ -399,7 +399,7 @@ class Visualizer:
         keypoints = predictions.pred_keypoints if predictions.has("pred_keypoints") else None
 
         if predictions.has("pred_masks"):
-            masks = np.asarray(predictions.pred_masks)
+            masks = np.asarray(predictions.pred_masks.cpu())
             masks = [GenericMask(x, self.output.height, self.output.width) for x in masks]
         else:
             masks = None
@@ -1207,7 +1207,7 @@ class Visualizer:
         Convert different format of boxes to an NxB array, where B = 4 or 5 is the box dimension.
         """
         if isinstance(boxes, Boxes) or isinstance(boxes, RotatedBoxes):
-            return boxes.tensor.detach().numpy()
+            return boxes.tensor.cpu().detach().numpy()
         else:
             return np.asarray(boxes)
 
@@ -1225,7 +1225,7 @@ class Visualizer:
         if isinstance(m, BitMasks):
             m = m.tensor.numpy()
         if isinstance(m, torch.Tensor):
-            m = m.numpy()
+            m = m.cpu().numpy()
         ret = []
         for x in m:
             if isinstance(x, GenericMask):
